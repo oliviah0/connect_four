@@ -84,6 +84,8 @@ function endGame(msg) {
   // TODO: pop up alert message
 }
 
+
+
 /** handleClick: handle click of column top to play piece */
 
 function handleClick(evt) {
@@ -103,6 +105,9 @@ function handleClick(evt) {
 
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
+  if(checkForTie()) {
+    return alert("tie works")
+  }
 
   // check for win
   if (checkForWin()) {
@@ -112,6 +117,15 @@ function handleClick(evt) {
   // switch players
   // TODO: switch currPlayer 1 <-> 2
   currPlayer = currPlayer === 1 ? 2 : 1;
+
+}
+
+function checkForTie() {
+  //if the first row[0] is filled, that means that the rest of the board is filled.
+  return board[0].every(cell => {
+    return cell !== null;
+  })
+
 
 }
 
