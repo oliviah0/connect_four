@@ -11,6 +11,8 @@ const HEIGHT = 6;
 let currPlayer = 1; // active player: 1 or 2
 let board = []; // array of rows, each row is array of cells  (board[y][x])
 
+let offSet;
+
 /** makeBoard: create in-JS board structure:
  *    board = array of rows, each row is array of cells  (board[y][x])
  */
@@ -36,11 +38,11 @@ function makeHtmlBoard() {
   for (let x = 0; x < WIDTH; x++) {
     let headCell = document.createElement("td");
     headCell.setAttribute("id", x);
+    headCell.classList.add("hovered");
     top.append(headCell);
   }
   board.append(top);
 
-  
   //creates a row and appends to board
   for (let y = 0; y < HEIGHT; y++) {
     const row = document.createElement("tr");
@@ -71,13 +73,17 @@ function placeInTable(y, x) {
   let piece = document.createElement("div")
   piece.classList.add(`piece`, `p${currPlayer}`);
   let cell = document.getElementById(`${y}-${x}`);
+  
   cell.appendChild(piece);
 }
 
 /** endGame: announce game end */
 
 function endGame(msg) {
-  alert(msg)
+  setTimeout(function(){
+    alert(msg)
+  }, 1000)
+  
 }
 
 
@@ -98,16 +104,20 @@ function handleClick(evt) {
   placeInTable(y, x)
   board[y][x] = currPlayer;
 
-  // check for tie
-  if(checkForTie()) {
-    return endGame("Game Over - Tie")
-  }
+ 
+    if (checkForWin()) {
+      let top = document.getElementById("column-top")
+      top.removeEventListener("click", handleClick)
+      return endGame(`Player ${currPlayer} won!`);
+    }
+    // check for tie
+    if(checkForTie()) {
+      return endGame("Game Over - Tie")
+    }
 
   // check for win
-  if (checkForWin()) {
-    return endGame(`Player ${currPlayer} won!`);
-  }
 
+  
   // switch players
   // TODO: switch currPlayer 1 <-> 2
   currPlayer = currPlayer === 1 ? 2 : 1;
@@ -124,6 +134,7 @@ function checkForTie() {
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
+
 
 function checkForWin() {
   function _win(cells) {
