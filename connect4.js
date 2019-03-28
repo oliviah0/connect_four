@@ -93,7 +93,39 @@ function endGame(msg) {
 function handleClick(evt) {
   // get x from ID of clicked cell
   let x = +evt.target.id;
+  nextMove(x);
 
+  // // get next spot in column (if none, ignore click)
+  // let y = findSpotForCol(x);
+  // if (y === null) {
+  //   return;
+  // }
+
+  // // place piece in board and add to HTML table
+  // placeInTable(y, x)
+  // board[y][x] = currPlayer;
+
+ 
+  //   if (checkForWin()) {
+  //     let top = document.getElementById("column-top")
+  //     top.removeEventListener("click", handleClick)
+  //     return endGame(`Player ${currPlayer} won!`);
+  //   }
+  //   // check for tie
+  //   if(checkForTie()) {
+  //     return endGame("Game Over - Tie")
+  //   }
+
+  // // check for win
+
+  
+  // // switch players
+  // // TODO: switch currPlayer 1 <-> 2
+  // currPlayer = currPlayer === 1 ? 2 : 1;
+
+}
+
+function nextMove(x){
   // get next spot in column (if none, ignore click)
   let y = findSpotForCol(x);
   if (y === null) {
@@ -121,6 +153,12 @@ function handleClick(evt) {
   // switch players
   // TODO: switch currPlayer 1 <-> 2
   currPlayer = currPlayer === 1 ? 2 : 1;
+  if(currPlayer === 2) {
+    setTimeout(function(){
+      playerTwoMove()
+    }, 1000)
+    
+  }
 
 }
 
@@ -169,7 +207,15 @@ function checkForWin() {
       }
     }
   }
+
+
 }
 
 makeBoard();
 makeHtmlBoard();
+
+function playerTwoMove(){
+  let x = Math.floor(Math.random()*HEIGHT)
+  nextMove(x)
+}
+
